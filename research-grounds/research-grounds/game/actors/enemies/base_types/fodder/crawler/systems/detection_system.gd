@@ -1,0 +1,53 @@
+class_name DetectionSystem
+
+extends Area2D
+
+#data injected from crawler.gd _ready(), 
+#so data can be called without writing as a parameter in functions
+var data: EnemyFodderData
+var body: CharacterBody2D
+
+#typecasts as CharacterBody2D, gives access to global_position, velocity, etc.
+#sets default value to null (no player is detected)
+var player: CharacterBody2D = null
+
+func _ready() -> void:
+	#connects _on_body_entered func to body_entered Area2D func
+	body_entered.connect(_on_body_entered)
+	#connects _on_body_exited func to body_exited Area2D func
+	body_exited.connect(_on_body_exited)
+	
+func update() -> void:
+	if not has_player():
+		data.in_attack_range = false
+		return
+		
+	in_attack_range(40)
+
+func _on_body_entered(body: Node) -> void:
+	#if player enters detection area then
+	if body.is_in_group("Player"):
+		#recasts body as CharacterBody2D
+		player = body as CharacterBody2D
+		data.player_detected = true
+
+func _on_body_exited(body: Node) -> void:
+	#if player exits detection area then
+	if body == player:
+		player = null
+		data.player_detected = false
+		data.in_attack_range = false
+
+func has_player() -> bool:
+	return player != null
+
+func in_attack_range(max_range) -> void:
+	var dist = get_distance_to_player()
+	#ex: if dist <= max_range is false, this sets in_attac_range to false
+	data.in_attack_range = dist <= max_range
+
+func get_distance_to_player() -> float:
+	return body.global_position.distance_to(get_player_position())
+	
+func get_player_position() -> Vector2:
+	return player.global_position if player else Vector2.ZERO
