@@ -20,7 +20,7 @@ func update() -> void:
 		data.in_attack_range = false
 		return
 		
-	in_attack_range(40)
+	update_attack_range(40)
 
 func _on_body_entered(body: Node) -> void:
 	#if player enters detection area then
@@ -39,10 +39,9 @@ func _on_body_exited(body: Node) -> void:
 func has_player() -> bool:
 	return player != null
 
-func in_attack_range(max_range) -> void:
-	var dist = get_distance_to_player()
-	#ex: if dist <= max_range is false, this sets in_attack_range to false
-	data.in_attack_range = dist <= max_range
+func update_attack_range(max_range) -> void:
+	#ex: if dist_sq <= max_range_sq is false, this sets in_attack_range to false
+	data.in_attack_range = global_position.distance_squared_to(get_player_position()) <= max_range * max_range
 
 func get_distance_to_player() -> float:
 	return global_position.distance_to(get_player_position())

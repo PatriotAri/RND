@@ -13,4 +13,3 @@ var state_just_changed:= false
 var patrol_speed:= 50
 var walk_speed:= 65.0
 var run_speed:= 130.0
-var is_attacking:= false
