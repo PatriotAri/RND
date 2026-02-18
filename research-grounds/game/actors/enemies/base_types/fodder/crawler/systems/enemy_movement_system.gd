@@ -43,14 +43,16 @@ func update(delta: float) -> void:
 		_:
 			idle(delta)
 
-func idle(_delta: float) -> void:
+func _stop() -> void:
 	body.velocity = Vector2.ZERO
 	body.move_and_slide()
 
+func idle(_delta: float) -> void:
+	_stop()
+
 func patrol(delta: float) -> void:
 	if patrol_points.is_empty():
-		body.velocity = Vector2.ZERO
-		body.move_and_slide()
+		_stop()
 		return
 	var target_pos := patrol_points[current_patrol_index]
 	var direction := target_pos - body.global_position
@@ -75,8 +77,7 @@ func reset_patrol_origin(new_origin: Vector2) -> void:
 
 func chase(_delta: float) -> void:
 	if not detection_system.has_player():
-		body.velocity = Vector2.ZERO
-		body.move_and_slide()
+		_stop()
 		return
 	var target_pos := detection_system.get_player_position()
 	var direction := (target_pos - body.global_position).normalized()
@@ -84,8 +85,7 @@ func chase(_delta: float) -> void:
 	body.move_and_slide()
 
 func attack(delta: float) -> void:
-	body.velocity = Vector2.ZERO
-	body.move_and_slide()
+	_stop()
 	if not attack_performed:
 		body.perform_melee_attack()
 		attack_performed = true
