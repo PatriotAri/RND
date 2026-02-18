@@ -6,7 +6,6 @@ extends Area2D
 #so data can be called without writing as a parameter in functions
 var data: EnemyFodderData
 
-#typecasts as CharacterBody2D, gives access to global_position, velocity, etc.
 #sets default value to null (no player is detected)
 var player: CharacterBody2D = null
 

@@ -38,21 +38,16 @@ func _ready() -> void:
 	movement_system.detection_system = detection_system
 	
 func _physics_process(delta: float) -> void:
-	#temp code, shows player targetting works
 	detection_system.update()
 	enemy_state_machine.update(data)
 	movement_system.update(delta)
 	
-func _on_chase_ended() -> void:
-	movement_system.reset_patrol_origin(global_position)
-
 #instance melee hitbox
 func perform_melee_attack():
 	print("Enemy attacking!")
 	#instances hitbox scene
 	var hitbox = melee_hitbox_scene.instantiate()
 	
-	# NEW: Configure hitbox to hit player (layer 5 = bit value 16)
 	hitbox.target_layer = 16
 	
 	# Override timing values for enemy attacks
