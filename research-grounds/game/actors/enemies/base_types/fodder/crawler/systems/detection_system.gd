@@ -5,7 +5,6 @@ extends Area2D
 #data injected from crawler.gd _ready(), 
 #so data can be called without writing as a parameter in functions
 var data: EnemyFodderData
-var body: CharacterBody2D
 
 #typecasts as CharacterBody2D, gives access to global_position, velocity, etc.
 #sets default value to null (no player is detected)
@@ -47,7 +46,7 @@ func in_attack_range(max_range) -> void:
 	data.in_attack_range = dist <= max_range
 
 func get_distance_to_player() -> float:
-	return body.global_position.distance_to(get_player_position())
+	return global_position.distance_to(get_player_position())
 	
 func get_player_position() -> Vector2:
 	return player.global_position if player else Vector2.ZERO

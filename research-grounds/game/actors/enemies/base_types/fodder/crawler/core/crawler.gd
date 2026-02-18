@@ -34,8 +34,6 @@ func _ready() -> void:
 	enemy_state_machine = EnemyStateMachine.new()
 	movement_system.data = data
 	
-	detection_system.body = self
-	
 	movement_system.setup(self)
 	movement_system.detection_system = detection_system
 	
