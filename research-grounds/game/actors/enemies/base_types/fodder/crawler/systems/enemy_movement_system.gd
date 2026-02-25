@@ -14,6 +14,7 @@ var patrol_timer:= 0.0
 
 #attack variables
 var attack_performed:= false
+var attack_timer:= 0.0
 
 func _init(body_ref: CharacterBody2D, data_ref: EnemyFodderData) -> void:
 	body = body_ref
@@ -89,7 +90,10 @@ func attack(delta: float) -> void:
 	if not attack_performed:
 		body.perform_melee_attack()
 		attack_performed = true
-		data.attack_finished = true
+	else:
+		attack_timer += delta
+		if attack_timer >= body.windup_time + body.lifetime:
+			data.attack_finished = true
 
 func attack_cooldown(_delta: float) -> void:
 	_stop()
@@ -97,5 +101,6 @@ func attack_cooldown(_delta: float) -> void:
 func _on_state_changed(from: EnemyStateMachine.State, to: EnemyStateMachine.State) -> void:
 	if to == EnemyStateMachine.State.ATTACK:
 		attack_performed = false
+		attack_timer = 0.0
 	if from == EnemyStateMachine.State.CHASE:
 		reset_patrol_origin(body.global_position)
